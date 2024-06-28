@@ -27,12 +27,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="src\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="src\.http\Todo.http" />
-  </ItemGroup>
-
 </Project>
