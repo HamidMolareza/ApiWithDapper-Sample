@@ -65,18 +65,18 @@ dotnet run --project src/ApiWithDapper.csproj
 #### Approach 2: Use docker
 
 ```bash
-docker build -t ApiWithDapper:latest .
-docker run --rm -p 8080:8080 ApiWithDapper:latest
+docker build -t api-with-dapper:latest .
+docker run --rm -p 8080:8080 api-with-dapper:latest
 ```
 
 Finally you can remove the image with the below command:
 ```bash
-docker rmi -f ApiWithDapper
+docker rmi -f api-with-dapper
 ```
 
 ### How to use?
 
-After the project is executed, you can use [swagger](http://localhost:8080/swagger/) or [Globalization.http](src/http/Todo.http) file.
+After the project is executed, you can use [swagger](http://localhost:8080/swagger/) or [Todo.http](src/http/Todo.http) file.
 
 
 ## Project Structure
