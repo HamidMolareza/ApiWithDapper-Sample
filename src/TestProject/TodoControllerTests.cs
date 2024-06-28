@@ -3,152 +3,152 @@ using ApiWithDapper.Todo;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
-namespace TestProject {
-    public class TodoControllerTests {
-        private readonly Mock<ITodoRepository> _mockRepo;
-        private readonly TodoController _controller;
+namespace TestProject;
 
-        public TodoControllerTests() {
-            _mockRepo = new Mock<ITodoRepository>();
-            _controller = new TodoController(_mockRepo.Object);
-        }
+public class TodoControllerTests {
+    private readonly Mock<ITodoRepository> _mockRepo;
+    private readonly TodoController _controller;
 
-        [Fact]
-        public async Task GetAll_ReturnsOkResult_WithPageData() {
-            // Arrange
-            var pageData = new PageData<Todo> {
-                Page = 1,
-                TotalPages = 1,
-                HasNextPage = false,
-                HasPreviousPage = false,
-                TotalCount = 1,
-                Data = [new Todo() { Id = 1, Title = "Test", Completed = false }]
-            };
-            _mockRepo.Setup(repo => repo.GetAllAsync(null, null, 10, 1)).ReturnsAsync(pageData);
+    public TodoControllerTests() {
+        _mockRepo = new Mock<ITodoRepository>();
+        _controller = new TodoController(_mockRepo.Object);
+    }
 
-            // Act
-            var result = await _controller.GetAll(null, null, 10, 1);
+    [Fact]
+    public async Task GetAll_ReturnsOkResult_WithPageData() {
+        // Arrange
+        var pageData = new PageData<Todo> {
+            Page = 1,
+            TotalPages = 1,
+            HasNextPage = false,
+            HasPreviousPage = false,
+            TotalCount = 1,
+            Data = [new Todo() { Id = 1, Title = "Test", Completed = false }]
+        };
+        _mockRepo.Setup(repo => repo.GetAllAsync(null, null, 10, 1)).ReturnsAsync(pageData);
 
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnValue = Assert.IsType<PageData<Todo>>(okResult.Value);
-            Assert.Equal(pageData, returnValue);
-        }
+        // Act
+        var result = await _controller.GetAll(null, null, 10, 1);
 
-        [Fact]
-        public async Task GetById_ReturnsOkResult_WithTodo() {
-            // Arrange
-            var todo = new Todo { Id = 1, Title = "Test", Completed = false };
-            _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(todo);
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        var returnValue = Assert.IsType<PageData<Todo>>(okResult.Value);
+        Assert.Equal(pageData, returnValue);
+    }
 
-            // Act
-            var result = await _controller.GetById(1);
+    [Fact]
+    public async Task GetById_ReturnsOkResult_WithTodo() {
+        // Arrange
+        var todo = new Todo { Id = 1, Title = "Test", Completed = false };
+        _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(todo);
 
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnValue = Assert.IsType<Todo>(okResult.Value);
-            Assert.Equal(todo, returnValue);
-        }
+        // Act
+        var result = await _controller.GetById(1);
 
-        [Fact]
-        public async Task GetById_ReturnsNotFoundResult_WhenTodoNotFound() {
-            // Arrange
-            _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Todo)null!);
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        var returnValue = Assert.IsType<Todo>(okResult.Value);
+        Assert.Equal(todo, returnValue);
+    }
 
-            // Act
-            var result = await _controller.GetById(1);
+    [Fact]
+    public async Task GetById_ReturnsNotFoundResult_WhenTodoNotFound() {
+        // Arrange
+        _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Todo)null!);
 
-            // Assert
-            Assert.IsType<NotFoundResult>(result.Result);
-        }
+        // Act
+        var result = await _controller.GetById(1);
 
-        [Fact]
-        public async Task Create_ReturnsCreatedAtActionResult_WithTodo() {
-            // Arrange
-            var todo = new Todo { Title = "Test", Completed = false };
-            _mockRepo.Setup(repo => repo.CreateAsync(todo)).ReturnsAsync(1);
+        // Assert
+        Assert.IsType<NotFoundResult>(result.Result);
+    }
 
-            // Act
-            var result = await _controller.Create(todo);
+    [Fact]
+    public async Task Create_ReturnsCreatedAtActionResult_WithTodo() {
+        // Arrange
+        var todo = new Todo { Title = "Test", Completed = false };
+        _mockRepo.Setup(repo => repo.CreateAsync(todo)).ReturnsAsync(1);
 
-            // Assert
-            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
-            var returnValue = Assert.IsType<Todo>(createdAtActionResult.Value);
-            Assert.Equal(1, returnValue.Id);
-        }
+        // Act
+        var result = await _controller.Create(todo);
 
-        [Fact]
-        public async Task Update_ReturnsNoContentResult_WhenTodoIsUpdated() {
-            // Arrange
-            var todo = new Todo { Id = 1, Title = "Test", Completed = false };
-            _mockRepo.Setup(repo => repo.UpdateAsync(todo)).ReturnsAsync(1);
+        // Assert
+        var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
+        var returnValue = Assert.IsType<Todo>(createdAtActionResult.Value);
+        Assert.Equal(1, returnValue.Id);
+    }
 
-            // Act
-            var result = await _controller.Update(1, todo);
+    [Fact]
+    public async Task Update_ReturnsNoContentResult_WhenTodoIsUpdated() {
+        // Arrange
+        var todo = new Todo { Id = 1, Title = "Test", Completed = false };
+        _mockRepo.Setup(repo => repo.UpdateAsync(todo)).ReturnsAsync(1);
 
-            // Assert
-            Assert.IsType<NoContentResult>(result);
-        }
+        // Act
+        var result = await _controller.Update(1, todo);
 
-        [Fact]
-        public async Task Update_ReturnsBadRequestResult_WhenIdMismatch() {
-            // Arrange
-            var todo = new Todo { Id = 1, Title = "Test", Completed = false };
+        // Assert
+        Assert.IsType<NoContentResult>(result);
+    }
 
-            // Act
-            var result = await _controller.Update(2, todo);
+    [Fact]
+    public async Task Update_ReturnsBadRequestResult_WhenIdMismatch() {
+        // Arrange
+        var todo = new Todo { Id = 1, Title = "Test", Completed = false };
 
-            // Assert
-            Assert.IsType<BadRequestResult>(result);
-        }
+        // Act
+        var result = await _controller.Update(2, todo);
 
-        [Fact]
-        public async Task Update_ReturnsNotFoundResult_WhenTodoNotFound() {
-            // Arrange
-            var todo = new Todo { Id = 1, Title = "Test", Completed = false };
-            _mockRepo.Setup(repo => repo.UpdateAsync(todo)).ReturnsAsync(0);
+        // Assert
+        Assert.IsType<BadRequestResult>(result);
+    }
 
-            // Act
-            var result = await _controller.Update(1, todo);
+    [Fact]
+    public async Task Update_ReturnsNotFoundResult_WhenTodoNotFound() {
+        // Arrange
+        var todo = new Todo { Id = 1, Title = "Test", Completed = false };
+        _mockRepo.Setup(repo => repo.UpdateAsync(todo)).ReturnsAsync(0);
 
-            // Assert
-            Assert.IsType<NotFoundResult>(result);
-        }
+        // Act
+        var result = await _controller.Update(1, todo);
 
-        [Fact]
-        public async Task Delete_ReturnsNoContentResult_WhenTodoIsDeleted() {
-            // Arrange
-            _mockRepo.Setup(repo => repo.DeleteAsync(1)).ReturnsAsync(1);
+        // Assert
+        Assert.IsType<NotFoundResult>(result);
+    }
 
-            // Act
-            var result = await _controller.Delete(1);
+    [Fact]
+    public async Task Delete_ReturnsNoContentResult_WhenTodoIsDeleted() {
+        // Arrange
+        _mockRepo.Setup(repo => repo.DeleteAsync(1)).ReturnsAsync(1);
 
-            // Assert
-            Assert.IsType<NoContentResult>(result);
-        }
+        // Act
+        var result = await _controller.Delete(1);
 
-        [Fact]
-        public async Task Delete_ReturnsNotFoundResult_WhenTodoNotFound() {
-            // Arrange
-            _mockRepo.Setup(repo => repo.DeleteAsync(1)).ReturnsAsync(0);
+        // Assert
+        Assert.IsType<NoContentResult>(result);
+    }
 
-            // Act
-            var result = await _controller.Delete(1);
+    [Fact]
+    public async Task Delete_ReturnsNotFoundResult_WhenTodoNotFound() {
+        // Arrange
+        _mockRepo.Setup(repo => repo.DeleteAsync(1)).ReturnsAsync(0);
 
-            // Assert
-            Assert.IsType<NotFoundResult>(result);
-        }
+        // Act
+        var result = await _controller.Delete(1);
 
-        [Fact]
-        public async Task DeleteAll_ReturnsNoContentResult_WhenAllTodosAreDeleted() {
-            // Arrange
-            _mockRepo.Setup(repo => repo.DeleteAllAsync()).Returns(Task.CompletedTask);
+        // Assert
+        Assert.IsType<NotFoundResult>(result);
+    }
 
-            // Act
-            var result = await _controller.DeleteAll();
+    [Fact]
+    public async Task DeleteAll_ReturnsNoContentResult_WhenAllTodosAreDeleted() {
+        // Arrange
+        _mockRepo.Setup(repo => repo.DeleteAllAsync()).Returns(Task.CompletedTask);
 
-            // Assert
-            Assert.IsType<NoContentResult>(result);
-        }
+        // Act
+        var result = await _controller.DeleteAll();
+
+        // Assert
+        Assert.IsType<NoContentResult>(result);
     }
 }

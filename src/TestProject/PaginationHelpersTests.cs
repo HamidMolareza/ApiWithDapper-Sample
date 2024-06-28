@@ -16,7 +16,7 @@ public class PaginationHelpersTests {
         var parameters = new DynamicParameters();
         const int limit = 10;
         const int page = 2;
-        
+
         mockDbConnection.SetupDapperAsync(db => db.ExecuteScalarAsync<int>(
                 It.IsAny<string>(),
                 It.IsAny<object>(),
