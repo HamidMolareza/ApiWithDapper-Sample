@@ -18,7 +18,7 @@ public class TodoRepository(IDbConnection db) : ITodoRepository {
         }
 
         if (!string.IsNullOrEmpty(contains)) {
-            sql.Append($" and Title like @Title");
+            sql.Append(" and Title like @Title");
             parameters.Add("Title", $"%{contains}%");
         }
 
