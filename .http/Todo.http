@@ -1,0 +1,37 @@
+@ApiWithDapper_HostAddress = http://localhost:5208
+
+###
+GET {{ApiWithDapper_HostAddress}}/Todo/All?completed=false&contains=task&limit=200&page=1
+
+###
+@GetById = 1
+GET {{ApiWithDapper_HostAddress}}/Todo/{{GetById}}
+
+###
+POST {{ApiWithDapper_HostAddress}}/Todo/Create
+accept: */*
+Content-Type: application/json
+
+{
+  "title": "Task 1",
+  "completed": false
+}
+
+###
+@UpdateById = 1
+PUT {{ApiWithDapper_HostAddress}}/Todo/{{UpdateById}}
+accept: */*
+Content-Type: application/json
+
+{
+  "Id": 1,
+  "title": "Task 1",
+  "completed": true
+}
+
+###
+@DeleteById = 1
+DELETE {{ApiWithDapper_HostAddress}}/Todo/{{DeleteById}}
+
+###
+DELETE {{ApiWithDapper_HostAddress}}/Todo/All
