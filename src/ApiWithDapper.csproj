@@ -28,7 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include=".http\Todo.http" />
+    <Folder Include="src\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="src\.http\Todo.http" />
   </ItemGroup>
 
 </Project>
