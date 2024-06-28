@@ -27,17 +27,15 @@ builder.Services.AddFluentMigratorCore()
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()) {
-    // Apply migration
-    using (var scope = app.Services.CreateScope()) {
-        var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
-        runner.MigrateUp();
-    }
-
-    //Swagger
-    app.UseSwagger();
-    app.UseSwaggerUI();
+// Apply migration
+using (var scope = app.Services.CreateScope()) {
+    var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+    runner.MigrateUp();
 }
+
+//Swagger
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
