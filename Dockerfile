@@ -13,6 +13,12 @@ COPY ./src/API/ .
 WORKDIR "/src/"
 RUN dotnet build "ApiWithDapper.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
+# Test stage
+FROM build AS test
+COPY ./src/TestsProject ./TestsProject
+WORKDIR "/src/TestsProject"
+RUN dotnet test "TestProject.csproj" -c $BUILD_CONFIGURATION
+
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "ApiWithDapper.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
