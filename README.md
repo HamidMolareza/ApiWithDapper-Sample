@@ -65,8 +65,7 @@ dotnet run --project src/ApiWithDapper.csproj
 #### Approach 2: Use docker
 
 ```bash
-docker build -t api-with-dapper:latest .
-docker run --rm -p 8080:8080 api-with-dapper:latest
+docker compose up
 ```
 
 Finally you can remove the image with the below command:
@@ -84,24 +83,25 @@ After the project is executed, you can use [swagger](http://localhost:8080/swagg
 ```txt
 src
 ├── API
-│   ├── ApiWithDapper.csproj
-│   ├── appsettings.Development.json
-│   ├── appsettings.json
-│   ├── Helpers
-│   │   ├── PageData.cs
-│   │   └── PaginationHelpers.cs
-│   ├── http
-│   │   └── Todo.http
-│   ├── Migrations
-│   │   └── Init_20240628005459.cs
-│   ├── Program.cs
-│   ├── Properties
-│   │   └── launchSettings.json
-│   └── Todo
-│       ├── ITodoRepository.cs
-│       ├── TodoController.cs
-│       ├── Todo.cs
-│       └── TodoRepository.cs
+│   ├── ApiWithDapper.csproj
+│   ├── appsettings.Development.json
+│   ├── appsettings.json
+│   ├── Helpers
+│   │   ├── DatabaseInitilizer.cs
+│   │   ├── PageData.cs
+│   │   └── PaginationHelpers.cs
+│   ├── http
+│   │   └── Todo.http
+│   ├── Migrations
+│   │   └── Init_20240628005459.cs
+│   ├── Program.cs
+│   ├── Properties
+│   │   └── launchSettings.json
+│   └── Todo
+│       ├── ITodoRepository.cs
+│       ├── TodoController.cs
+│       ├── Todo.cs
+│       └── TodoRepository.cs
 ├── src.sln
 └── TestProject
     ├── GlobalUsings.cs
