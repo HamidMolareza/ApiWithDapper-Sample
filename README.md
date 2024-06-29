@@ -83,24 +83,32 @@ After the project is executed, you can use [swagger](http://localhost:8080/swagg
 
 ```txt
 src
-├── ApiWithDapper.csproj
-├── appsettings.Development.json
-├── appsettings.json
-├── Helpers
-│   ├── PageData.cs
-│   └── PaginationHelpers.cs
-├── http
-│   └── Todo.http
-├── Migrations
-│   └── Init_20240628005459.cs
-├── Program.cs
-├── Properties
-│   └── launchSettings.json
-└── Todo
-    ├── ITodoRepository.cs
-    ├── TodoController.cs
-    ├── Todo.cs
-    └── TodoRepository.cs
+├── API
+│   ├── ApiWithDapper.csproj
+│   ├── appsettings.Development.json
+│   ├── appsettings.json
+│   ├── Helpers
+│   │   ├── PageData.cs
+│   │   └── PaginationHelpers.cs
+│   ├── http
+│   │   └── Todo.http
+│   ├── Migrations
+│   │   └── Init_20240628005459.cs
+│   ├── Program.cs
+│   ├── Properties
+│   │   └── launchSettings.json
+│   └── Todo
+│       ├── ITodoRepository.cs
+│       ├── TodoController.cs
+│       ├── Todo.cs
+│       └── TodoRepository.cs
+├── src.sln
+└── TestProject
+    ├── GlobalUsings.cs
+    ├── PaginationHelpersTests.cs
+    ├── TestProject.csproj
+    ├── TodoControllerTests.cs
+    └── TodoRepositoryTests.cs
 ```
 
 ## Contributing
