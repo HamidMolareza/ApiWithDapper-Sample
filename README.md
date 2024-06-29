@@ -75,7 +75,7 @@ docker rmi -f api-with-dapper
 
 ### How to use?
 
-After the project is executed, you can use [swagger](http://localhost:8080/swagger/) or [Todo.http](src/http/Todo.http) file.
+After the project is executed, you can use [swagger](http://localhost:8080/swagger/) or [Todo.http](src/API/http/Todo.http) file.
 
 
 ## Project Structure
