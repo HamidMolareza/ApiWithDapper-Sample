@@ -1,4 +1,5 @@
 using System.Data;
+using ApiWithDapper.Helpers;
 using ApiWithDapper.Todo;
 using FluentMigrator.Runner;
 using Microsoft.Data.SqlClient;
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Register IDbConnection
 var dbConnectionString = builder.Configuration.GetConnectionString("Default");
-builder.Services.AddTransient<IDbConnection>(sp =>
+builder.Services.AddTransient<IDbConnection>(_ =>
     new SqlConnection(dbConnectionString));
 
 builder.Services.AddScoped<ITodoRepository, TodoRepository>();
@@ -29,8 +30,14 @@ var app = builder.Build();
 
 // Apply migration
 using (var scope = app.Services.CreateScope()) {
+    await using var masterConnection = new SqlConnection(builder.Configuration.GetConnectionString("Master"));
+
+    await masterConnection.CreateDatabaseAsync();
+
     var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
     runner.MigrateUp();
+
+    await DatabaseInitializer.SeedDatabaseAsync(scope);
 }
 
 //Swagger

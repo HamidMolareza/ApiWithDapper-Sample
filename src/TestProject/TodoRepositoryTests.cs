@@ -54,6 +54,31 @@ public class TodoRepositoryTests {
     }
 
     [Fact]
+    public async Task CreateManyAsync_ShouldReturnNumOfCreatedItems() {
+        // Arrange
+        var items = new List<Todo> {
+            new() { Title = "Task 1", Completed = false },
+            new() { Title = "Task 2", Completed = true },
+        };
+
+        var mockDbConnection = new Mock<DbConnection>();
+        mockDbConnection.SetupDapperAsync(c => c.ExecuteAsync(
+                It.IsAny<string>(),
+                It.IsAny<object>(),
+                It.IsAny<IDbTransaction>(),
+                It.IsAny<int?>(),
+                It.IsAny<CommandType?>()))
+            .ReturnsAsync(items.Count);
+        var repository = new TodoRepository(mockDbConnection.Object);
+
+        // Act
+        var result = await repository.CreateManyAsync(items);
+
+        // Assert
+        Assert.Equal(items.Count, result);
+    }
+
+    [Fact]
     public async Task UpdateAsync_ShouldReturnNumberOfAffectedRows() {
         // Arrange
         var updatedTodo = new Todo { Id = 1, Title = "Updated Task", Completed = true };
